@@ -1,50 +1,48 @@
 const express = require('express');
 const passport = require('passport');
 
-const UserService = require('./../services/user.service');
+const CustomerService = require('../services/customer.service');
 const { checkRoles } = require('../middlewares/auth.handler');
-const validatorHandler = require('./../middlewares/validator.handler');
-const { updateUserSchema, createUserSchema, getUserSchema } = require('./../schemas/user.schema');
+const validationHandler = require('../middlewares/validator.handler');
+const {
+  createCustomerSchema,
+  getCustomerSchema,
+  updateCustomerSchema,
+} = require('../schemas/customer.schema');
 
 const router = express.Router();
-const service = new UserService();
+const service = new CustomerService();
 
 router.get('/',
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
   async (req, res, next) => {
     try {
-      const categories = await service.find();
-      res.json(categories);
+      res.json(await service.find());
     } catch (error) {
       next(error);
     }
   });
 
-router.get('/user-id/',
+router.get('/customer-id/',
   passport.authenticate('jwt', { session: false }),
-  validatorHandler(getUserSchema, 'query'),
   checkRoles('admin'),
+  validationHandler(getCustomerSchema, 'query'),
   async (req, res, next) => {
     try {
       const { id } = req.query;
-      const category = await service.findOne(id);
-      res.json(category);
+      res.json(await service.findOne(id));
     } catch (error) {
       next(error);
     }
-  }
-);
+  });
 
 router.post('/',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles('admin'),
-  validatorHandler(createUserSchema, 'body'),
+  validationHandler(createCustomerSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;
-      const newCategory = await service.create(body);
-      res.status(201).json(newCategory);
+      res.status(201).json(await service.create(body));
     } catch (error) {
       next(error);
     }
@@ -54,14 +52,13 @@ router.post('/',
 router.patch('/',
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
-  validatorHandler(getUserSchema, 'query'),
-  validatorHandler(updateUserSchema, 'body'),
+  validationHandler(getCustomerSchema, 'query'),
+  validationHandler(updateCustomerSchema, 'body'),
   async (req, res, next) => {
     try {
       const { id } = req.query;
       const body = req.body;
-      const category = await service.update(id, body);
-      res.json(category);
+      res.status(201).json(await service.update(id, body));
     } catch (error) {
       next(error);
     }
@@ -71,12 +68,11 @@ router.patch('/',
 router.delete('/',
   passport.authenticate('jwt', { session: false }),
   checkRoles('admin'),
-  validatorHandler(getUserSchema, 'query'),
+  validationHandler(getCustomerSchema, 'query'),
   async (req, res, next) => {
     try {
       const { id } = req.query;
-      await service.delete(id);
-      res.status(201).json({ id });
+      res.status(200).json(await service.delete(id));
     } catch (error) {
       next(error);
     }
@@ -84,4 +80,3 @@ router.delete('/',
 );
 
 module.exports = router;
-
