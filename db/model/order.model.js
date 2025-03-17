@@ -13,7 +13,7 @@ const OrderSchema = {
 
   customerId: {
     field: 'customer_id',
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     //Indica la tabla a la cual se va a relacionar
     references: {

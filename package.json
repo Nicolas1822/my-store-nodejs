@@ -21,7 +21,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
-    "sequelize-cli": "^6.6.0"
+    "sequelize-cli": "^6.6.2"
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
@@ -32,14 +32,14 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^9.0.0",
-    "mysql2": "^3.2.0",
+    "mysql2": "^3.13.0",
     "nodemailer": "^6.9.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.29.3"
+    "sequelize": "^6.37.6"
   },
   "engines": {
     "node": "14.x"
