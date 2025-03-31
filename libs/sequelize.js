@@ -6,13 +6,13 @@ const setupModel = require('../db/model/index.js');
 const USER = encodeURIComponent(dbUser);
 const PASSWORD = encodeURIComponent(dbPassword);
 //Conectar con mysql
-const URI = `mysql://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
+// const URI = `mysql://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
 //Conectar con postgres
-// const URI = `postgres://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
+const URI = `postgres://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
 
 const sequelize = new Sequelize(URI, {
-  // dialect: 'postgres',
-  dialect: 'mysql',
+  dialect: 'postgres',
+  // dialect: 'mysql',
   logging: true,
 });
 
