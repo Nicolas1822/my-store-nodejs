@@ -1,6 +1,8 @@
 const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { models } = require('../libs/sequelize');
+const { config } = require('../config/config');
+const jwt = require('jsonwebtoken');
 
 class CustomerService {
 
@@ -37,9 +39,14 @@ class CustomerService {
     const newCustomer = await models.Customer.create(newData, {
       include: ['user']
     });
+    const payload = {
+      sub: newCustomer.id,
+      role: "customer"
+    };
+    const token = jwt.sign(payload, config.jwtSecret);
     delete newCustomer.user.dataValues.password;
     delete newCustomer.user.dataValues.recoveryToken;
-    return newCustomer;
+    return {customer: newCustomer, access_token: token};
   }
 
   async update(id, changes) {
