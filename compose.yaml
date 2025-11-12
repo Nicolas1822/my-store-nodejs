@@ -1,0 +1,50 @@
+services:
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_USER: 'nico'
+      DB_PASSWORD: 'admin123'
+      DB_HOST: 'db' # <-- CAMBIO CLAVE: Usa el nombre del servicio de la base de datos.
+      DB_NAME: 'my_store'
+      DB_PORT: '5432'
+      API_KEY: 18789
+      JWT_SECRET: D5jcs4XCRufIrznAL2BaQSkVedN31yl0
+      EMAIL: 'ng33446@gmail.com'
+      PASS_EMAIL: xwqfnhrsfhcobdsk
+    ports:
+      - 3000:3000
+    depends_on:
+      - db # <-- BUENA PRÁCTICA: Asegura que la DB inicie primero.
+
+  pgadmin4:
+    image: elestio/pgadmin:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_LISTEN_PORT: 9090
+    ports:
+      - 5050:9090
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    depends_on: # También es bueno que pgAdmin espere a la DB
+      - db
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_DB=my_store # Esto sí crea la base de datos 'my_store' la primera vez.
+      - POSTGRES_USER=nico
+      - POSTGRES_PASSWORD=admin123
+    ports:
+      - 5432:5432 # Este puerto es para conectarte DESDE TU MÁQUINA (host), no desde otro contenedor.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Añadido para persistencia de datos
+
+volumes: # Definir el volumen para que los datos no se pierdan al bajar el contenedor
+  postgres_data:
