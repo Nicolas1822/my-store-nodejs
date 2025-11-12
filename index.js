@@ -20,7 +20,7 @@ const options = {
     }
   }
 }
-app.use(cors(options));
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 require('./utils/auth');
 

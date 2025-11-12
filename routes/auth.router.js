@@ -20,8 +20,8 @@ router.post('/login',
   });
 
 router.post('/recovery',
-  passport.authenticate('jwt', { session: false }),
-  checkRoles('admin', 'customer'),
+  // passport.authenticate('local', { session: false }),
+  // checkRoles('admin', 'customer'),
   validatorHandler(recoveryPasswordSchema, 'body'),
   async (req, res, next) => {
     try {
